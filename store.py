@@ -7,7 +7,7 @@ import re
 import os
 import atexit
 
-# Custom CSS for styling
+
 def apply_custom_css():
     custom_css = """
     <style>
@@ -167,24 +167,24 @@ def extract_price(price_str):
     """
     Extract the minimum price from a price string (handles ranges like "166.95 to 198.95").
     """
-    # Remove currency symbols and commas
+    
     price_str = price_str.replace('$', '').replace(',', '')
-    # Extract the first numeric value (minimum price in a range)
+    
     match = re.search(r'\d+\.\d+', price_str)
     if match:
         return float(match.group())
-    return 0.0  # Default value if no price is found
+    return 0.0  
 
 def sort_products(products, sort_option):
     """
     Sort products based on the selected option.
     """
     if sort_option == "The Cheapest":
-        # Extract numeric value from price (handles ranges)
+        
         products['price_numeric'] = products['price'].apply(extract_price)
         products = products.sort_values(by='price_numeric', ascending=True)
     elif sort_option == "The Most Expensive":
-        # Extract numeric value from price (handles ranges)
+      
         products['price_numeric'] = products['price'].apply(extract_price)
         products = products.sort_values(by='price_numeric', ascending=False)
     return products
@@ -197,12 +197,12 @@ def cleanup_database(database='products.db'):
         os.remove(database)
         print(f"Deleted database file: {database}")
 
-# Register the cleanup function to run when the script exits
+
 atexit.register(cleanup_database)
 
 def main():
     st.set_page_config(layout="centered")
-    apply_custom_css()  # Apply custom CSS
+    apply_custom_css()  
     st.title("🌐 Online Shop 🌐")
 
     st.image("python.png", use_container_width=True, caption='🐍 Python Programming 🐍')
@@ -224,7 +224,7 @@ def main():
     except pd.io.sql.DatabaseError:
         products = pd.DataFrame(columns=['link', 'title', 'price', 'img']) 
 
-    # Add circular sort buttons
+    
     col1, col2 = st.columns(2)
     with col1:
         if st.button("The Cheapest", key="cheapest"):
@@ -233,12 +233,12 @@ def main():
         if st.button("The Most Expensive", key="most_expensive"):
             st.session_state.sort_option = "The Most Expensive"
 
-    # Sort products based on the selected option
+    
     sort_option = st.session_state.get('sort_option', "Default")
     if sort_option != "Default":
         products = sort_products(products, sort_option)
 
-    # Pagination
+    
     items_per_page = 4
     total_pages = max((len(products) + items_per_page - 1) // items_per_page, 1)
     page_number = st.session_state.get('page_number', 1)
@@ -246,7 +246,7 @@ def main():
     start_idx = (page_number - 1) * items_per_page
     end_idx = start_idx + items_per_page
 
-    # Display products
+    
     if not products.empty:
         for idx in range(start_idx, min(end_idx, len(products))):
             product = products.iloc[idx]
@@ -266,7 +266,7 @@ def main():
 
     st.write("") 
 
-    # Pagination controls
+   
     col_blank1, col_prev, col_next, col_blank2 = st.columns([1, 2, 2, 1])
 
     if total_pages > 1:
