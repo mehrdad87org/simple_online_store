@@ -36,8 +36,5 @@ This is a Python-based web application that scrapes product data from eBay, stor
    ```bash
    git clone https://github.com/mehrdad87org/simple_online_store.git
    cd simple_online_store
-
-Install Dependencies:
-pip install -r requirements.txt
-Run the Application:
-streamlit run store.py
+   pip install -r requirements.txt
+   streamlit run store.py
