@@ -339,7 +339,7 @@ def main():
     apply_custom_css()  # Apply custom CSS
     st.markdown('<div class="title">🌐 Online Shop 🌐</div>', unsafe_allow_html=True)
 
-    st.image("python.png", use_container_width=True, caption='🐍 Python Programming 🐍')
+    st.image("logo.png", use_container_width=True, caption='🐍 Python Programming 🐍')
 
     
     search_query = st.text_input("Search in eBay 🔎", value="", max_chars=None, placeholder='Search in eBay', key='searchbox', label_visibility='collapsed', help='Search in eBay 🔎').strip()
