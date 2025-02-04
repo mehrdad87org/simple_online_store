@@ -337,7 +337,7 @@ atexit.register(cleanup_database)
 def main():
     st.set_page_config(layout="centered")
     apply_custom_css()  # Apply custom CSS
-    st.markdown('<div class="title">🌐 Online Shop 🌐</div>', unsafe_allow_html=True)
+    st.markdown('<div class="title">🌐 Online Store 🌐</div>', unsafe_allow_html=True)
 
     st.image("logo.png", use_container_width=True, caption='🐍 Python Programming 🐍')
 
