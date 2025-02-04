@@ -10,13 +10,15 @@ import atexit
 def apply_custom_css():
     custom_css = """
     <style>
-        /* General Styles */
         body {
             font-family: 'Arial', sans-serif;
             color: white;
             background: linear-gradient(-45deg, #001933, #003366, #004080, #00509e);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
         }
 
         @keyframes gradientBG {
@@ -25,33 +27,31 @@ def apply_custom_css():
             100% { background-position: 0% 50%; }
         }
 
-        /* Title Animation */
-        .title {
-            font-size: 3.5em;
+        .neon-title {
+            font-size: 4.5em;
             font-weight: bold;
             text-align: center;
-            animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite, glow 2s ease-in-out infinite;
-            white-space: nowrap;
-            overflow: hidden;
-            border-right: 0.15em solid orange;
+            text-transform: uppercase;
+            color: #fff;
+            text-shadow: 
+                0 0 5px #00ff88, 
+                0 0 10px #00ff88, 
+                0 0 20px #00ff88, 
+                0 0 40px #00ff88, 
+                0 0 80px #00ff88;
+            animation: neonGlow 1.5s infinite alternate, float 3s ease-in-out infinite;
         }
 
-        @keyframes typing {
-            from { width: 0; }
-            to { width: 100%; }
+        @keyframes neonGlow {
+            0% { text-shadow: 0 0 5px #00ff88, 0 0 10px #00ff88, 0 0 20px #00ff88, 0 0 40px #00ff88, 0 0 80px #00ff88; }
+            100% { text-shadow: 0 0 10px #00ff88, 0 0 20px #00ff88, 0 0 40px #00ff88, 0 0 80px #00ff88, 0 0 120px #00ff88; }
         }
 
-        @keyframes blink-caret {
-            from, to { border-color: transparent; }
-            50% { border-color: orange; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
-        @keyframes glow {
-            0%, 100% { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #ff9d00, 0 0 40px #ff9d00; }
-            50% { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 40px #ff9d00, 0 0 80px #ff9d00; }
-        }
-
-        /* Custom Search Box */
         .stTextInput input {
             width: 100%;
             padding: 12px 20px;
@@ -76,14 +76,13 @@ def apply_custom_css():
             border-color: #00ff88;
         }
 
-        /* Custom Button Styles */
         .custom-button {
             display: inline-block;
             padding: 12px 24px;
             font-size: 16px;
             font-weight: bold;
-            color: black; /* Black text */
-            background-color: #FFD700; /* Yellow */
+            color: black;
+            background-color: #FFD700;
             border: none;
             border-radius: 25px;
             cursor: pointer;
@@ -93,7 +92,7 @@ def apply_custom_css():
         }
 
         .custom-button:hover {
-            background-color: #FFC300; /* Darker yellow on hover */
+            background-color: #FFC300;
             transform: translateY(-3px);
             box-shadow: 0 0 15px rgba(255, 195, 0, 0.5);
         }
@@ -109,15 +108,6 @@ def apply_custom_css():
             100% { transform: scale(1); }
         }
 
-        /* Center Buttons */
-        .center-buttons {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 20px;
-        }
-
-        /* Product Box Styles */
         .product-box {
             display: flex;
             border: 1px solid #444;
@@ -135,17 +125,6 @@ def apply_custom_css():
             background-color: rgba(0, 0, 0, 0.7);
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .product-image {
-            flex: 1;
-            margin-right: 20px;
-            animation: slideInLeft 0.5s ease-in-out, zoomIn 0.5s ease-in-out;
-        }
-
         .product-image img {
             border-radius: 10px;
             transition: transform 0.3s ease;
@@ -153,16 +132,6 @@ def apply_custom_css():
 
         .product-image img:hover {
             transform: scale(1.1);
-        }
-
-        @keyframes zoomIn {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        .product-info {
-            flex: 3;
-            animation: slideInRight 0.5s ease-in-out;
         }
 
         .product-info h3 {
@@ -180,7 +149,7 @@ def apply_custom_css():
 
         .ebay-link {
             display: inline-block;
-            background-color: #007BFF;
+            background-color: #FF015E;
             color: white;
             padding: 10px 15px;
             border-radius: 5px;
@@ -190,59 +159,149 @@ def apply_custom_css():
         }
 
         .ebay-link:hover {
-            background-color: #0056b3;
+            background-color: #78FF01;
             transform: translateY(-3px);
             animation: pulse 1s infinite;
         }
 
-        .ebay-link:active {
-            transform: translateY(0);
+        .cart-icon, .wishlist-icon {
+            position: fixed;
+            font-size: 24px;
+            color: white;
+            cursor: pointer;
+            animation: bounceIn 1s ease-in-out;
         }
 
-        /* Keyframe Animations */
+        .cart-icon {
+            top: 20px;
+            right: 20px;
+        }
+
+        .wishlist-icon {
+            top: 60px;
+            right: 20px;
+        }
+
+        .cart-icon:hover, .wishlist-icon:hover {
+            color: #FFD700;
+        }
+
+        .cart-count, .wishlist-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 5px 10px;
+            font-size: 12px;
+            animation: pulse 1s infinite;
+        }
+
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         @keyframes slideInLeft {
-            from {
-                transform: translateX(-20px);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
 
         @keyframes slideInRight {
-            from {
-                transform: translateX(20px);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
+            from { transform: translateX(20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
 
         @keyframes bounceIn {
-            0% {
-                transform: scale(0.5);
-                opacity: 0;
-            }
-            60% {
-                transform: scale(1.1);
-                opacity: 1;
-            }
-            100% {
-                transform: scale(1);
-            }
+            0% { transform: scale(0.5); opacity: 0; }
+            60% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        .footer a {
+            color: #FFD700;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .social-icons a {
+            color: white;
+            font-size: 24px;
+            transition: color 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            color: #FFD700;
+        }
+
+        .notification {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            animation: slideInRight 0.5s ease-in-out;
+            z-index: 1000;
+        }
+
+        .notification.success {
+            background-color: #00C851;
+        }
+
+        .notification.error {
+            background-color: #ff4444;
+        }
+
+        .heart-icon {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            font-size: 24px;
+            color: white;
+            cursor: pointer;
+            animation: bounceIn 1s ease-in-out;
+        }
+
+        .heart-icon:hover {
+            color: #FFD700;
+        }
+
+        .heart-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 5px 10px;
+            font-size: 12px;
+            animation: pulse 1s infinite;
         }
     </style>
     """
@@ -298,53 +357,37 @@ def fetch_product_data(database='products.db'):
     return df
 
 def extract_price(price_str):
-    """
-    Extract the minimum price from a price string (handles ranges like "166.95 to 198.95").
-    """
-    
     price_str = price_str.replace('$', '').replace(',', '')
-    
     match = re.search(r'\d+\.\d+', price_str)
     if match:
         return float(match.group())
     return 0.0  
 
 def sort_products(products, sort_option):
-    """
-    Sort products based on the selected option.
-    """
     if sort_option == "The Cheapest":
-        
         products['price_numeric'] = products['price'].apply(extract_price)
         products = products.sort_values(by='price_numeric', ascending=True)
     elif sort_option == "The Most Expensive":
-        
         products['price_numeric'] = products['price'].apply(extract_price)
         products = products.sort_values(by='price_numeric', ascending=False)
     return products
 
 def cleanup_database(database='products.db'):
-    """
-    Delete the database file when the script exits.
-    """
     if os.path.exists(database):
         os.remove(database)
         print(f"Deleted database file: {database}")
-
 
 atexit.register(cleanup_database)
 
 def main():
     st.set_page_config(layout="centered")
-    apply_custom_css()  # Apply custom CSS
-    st.markdown('<div class="title">🌐 Online Store 🌐</div>', unsafe_allow_html=True)
+    apply_custom_css()
+    st.markdown('<div class="neon-title">🌐 Online Store 🌐</div>', unsafe_allow_html=True)
 
     st.image("logo.png", use_container_width=True, caption='🐍 Python Programming 🐍')
 
-    
     search_query = st.text_input("Search in eBay 🔎", value="", max_chars=None, placeholder='Search in eBay', key='searchbox', label_visibility='collapsed', help='Search in eBay 🔎').strip()
 
-    # Centered buttons under the search box
     st.markdown('<div class="center-buttons">', unsafe_allow_html=True)
     if st.button("The Cheapest", key="cheapest"):
         st.session_state.sort_option = "The Cheapest"
@@ -366,12 +409,10 @@ def main():
     except pd.io.sql.DatabaseError:
         products = pd.DataFrame(columns=['link', 'title', 'price', 'img']) 
 
-    # Sort products based on the selected option
     sort_option = st.session_state.get('sort_option', "Default")
     if sort_option != "Default":
         products = sort_products(products, sort_option)
 
-    
     items_per_page = 4
     total_pages = max((len(products) + items_per_page - 1) // items_per_page, 1)
     page_number = st.session_state.get('page_number', 1)
@@ -379,7 +420,6 @@ def main():
     start_idx = (page_number - 1) * items_per_page
     end_idx = start_idx + items_per_page
 
-    
     if not products.empty:
         for idx in range(start_idx, min(end_idx, len(products))):
             product = products.iloc[idx]
@@ -392,6 +432,7 @@ def main():
                         <h3>{product['title']}</h3>
                         <p><strong>Price:</strong> {product['price']}</p>
                         <a target="_blank" href="{product['link']}" class="ebay-link">View on eBay</a>
+                        <button class="custom-button" onclick="incrementWishlist()">Add to Favorite</button>
                     </div>
                 </div>
             ''', unsafe_allow_html=True)
@@ -399,7 +440,6 @@ def main():
 
     st.write("") 
 
-   
     st.markdown('<div class="center-buttons">', unsafe_allow_html=True)
     col1, col2 = st.columns(2)
     with col1:
@@ -412,9 +452,47 @@ def main():
 
     st.write("")  
 
+    if 'wishlist_count' not in st.session_state:
+        st.session_state.wishlist_count = 0
+
+    st.markdown('''
+    <div class="heart-icon">❤️</div>
+    ''', unsafe_allow_html=True)
+
+
+    st.markdown('''
+        <script>
+            function incrementWishlist() {
+                fetch('/increment_wishlist', {
+                    method: 'POST'
+                }).then(response => response.json()).then(data => {
+                    document.querySelector('.heart-count').innerText = data.wishlist_count;
+                });
+            }
+        </script>
+    ''', unsafe_allow_html=True)
+
+    st.markdown('''
+        <div class="footer">
+            <p>© 2025 Online Store. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+            <div class="social-icons">
+                <a href="https://t.me/mehrdad87org"><img src="https://img.icons8.com/?size=100&id=k4jADXhS5U1t&format=png&color=000000" width="40" height="40"></a>
+            <a href="https://instagram.com/mehrdad_ourang87"><img src="https://img.icons8.com/?size=100&id=nj0Uj45LGUYh&format=png&color=000000" width="40" height="40"></a>
+            <a href="mailto:mehrdad87ourangg@gmail.com"><img src="https://img.icons8.com/?size=100&id=eFPBXQop6V2m&format=png&color=000000" width="40" height="40"></a>
+            <a href="https://github.com/mehrdad87org"><img src="https://img.icons8.com/?size=100&id=LoL4bFzqmAa0&format=png&color=000000" width="40" height="40"></a>
+            <a href="https://wa.link/78c7u1"><img src="https://img.icons8.com/?size=100&id=A1JUR9NRH7sC&format=png&color=000000" width="40" height="40"></a>
+            <a href="https://www.linkedin.com/in/mehrdad-ourang-4204b734a"><img src="https://img.icons8.com/?size=100&id=MR3dZdlA53te&format=png&color=000000" width="40" height="40"></a>
+        </div>
+    </div>
+    ''', unsafe_allow_html=True)
+
 if __name__ == "__main__":
     if 'page_number' not in st.session_state:
         st.session_state.page_number = 1
     if 'sort_option' not in st.session_state:
         st.session_state.sort_option = "Default"
+    if 'wishlist_count' not in st.session_state:
+        st.session_state.wishlist_count = 0
     main()
+
+#MEHRDAD
