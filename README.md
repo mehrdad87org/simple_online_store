@@ -2,8 +2,6 @@
 
 A beautiful, modern eBay product search application built with Streamlit, Python, and web scraping.
 
-![Demo Screenshot](demo.png)
-
 ## Features ✨
 
 - 🔍 Search for products on eBay directly from the app
