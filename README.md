@@ -1,61 +1,65 @@
-# Online Store - eBay Product Search and Display
+# Modern Online Shop
 
-This project is a Streamlit-based web application that allows users to search for products on eBay and display the results in an interactive and visually appealing interface. The application fetches product data from eBay, stores it in a SQLite database, and displays the products with options to sort and paginate through the results.
+A sleek, modern e-commerce web application built with Streamlit and Python that allows users to search and browse products from eBay.
+
+![Modern Online Shop](logo.png)
 
 ## Features
 
-1. **Search Products on eBay**:
-   - Users can enter a search query to fetch products from eBay.
-   - The application uses web scraping to extract product details such as title, price, image, and link.
+- **Beautiful UI with Glass Morphism Design**: Modern user interface with glass effect, gradient animations, and responsive design
+- **eBay Product Search**: Search for products directly from eBay
+- **Product Sorting**: Sort products by price (cheapest/most expensive) or popularity
+- **Favorites System**: Save products to your favorites list
+- **Shopping Cart**: Add products to cart for later checkout
+- **Pagination**: Browse through multiple pages of search results
+- **Toast Notifications**: Receive confirmation of user actions
+- **Responsive Design**: Works across desktop and mobile devices
 
-2. **Sort Products**:
-   - Users can sort the products by price:
-     - "The Cheapest": Sorts products from lowest to highest price.
-     - "The Most Expensive": Sorts products from highest to lowest price.
+## Installation
 
-3. **Pagination**:
-   - Products are displayed in pages, with 4 products per page.
-   - Users can navigate between pages using "Previous Page" and "Next Page" buttons.
+1. Clone this repository:
+   ```
+   git clone https://github.com/yourusername/modern-online-shop.git
+   cd modern-online-shop
+   ```
 
-4. **Custom Styling**:
-   - The application uses custom CSS for a modern and animated user interface.
-   - Features include neon title animations, gradient backgrounds, and hover effects.
+2. Install the required dependencies:
+   ```
+   pip install -r requirements.txt
+   ```
 
-5. **Database Integration**:
-   - Product data is stored in a SQLite database (`products.db`).
-   - The database is cleaned up (deleted) when the application exits.
+3. Run the application:
+   ```
+   streamlit run store.py
+   ```
 
-6. **Responsive Design**:
-   - The application is designed to be responsive and works well on different screen sizes.
+## Usage
 
-7. **Social Media Links**:
-   - The footer includes links to social media profiles and contact information.
+1. **Search for Products**: Enter a search term in the search box and press Enter
+2. **Sort Results**: Click the sorting buttons to arrange products by price or popularity
+3. **View Product Details**: Click on product cards to see more information
+4. **Add to Favorites**: Click the heart icon to add a product to your favorites
+5. **Add to Cart**: Click the cart icon or "Add to Cart" button to add products to your cart
+6. **View Cart/Favorites**: Use the navigation menu to access your cart and favorites
+7. **Checkout**: Navigate to your cart and click "Proceed to Checkout" to complete your purchase
 
-## How It Works
+## Technical Details
 
-1. **Search Query**:
-   - The user enters a search query in the input box.
-   - The application constructs a URL to search for the query on eBay.
+- **Web Scraping**: The application scrapes eBay search results using BeautifulSoup
+- **Data Storage**: Product data is temporarily stored in an SQLite database
+- **Session Management**: User cart and favorites are stored in Streamlit's session state
+- **Interactive Elements**: The UI includes JavaScript for enhanced user interaction
 
-2. **Web Scraping**:
-   - The application fetches the HTML content of the eBay search results page.
-   - It uses BeautifulSoup to parse the HTML and extract product details.
+## Dependencies
 
-3. **Database Storage**:
-   - Extracted product data is stored in a SQLite database for quick access and sorting.
+See [requirements.txt](requirements.txt) for a list of dependencies.
 
-4. **Display Products**:
-   - Products are displayed in a grid format with images, titles, prices, and links to eBay.
-   - Users can sort the products by price and navigate through pages.
+## License
 
-5. **Custom CSS**:
-   - The application applies custom CSS styles for animations, hover effects, and a visually appealing design.
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-## Requirements
+## Acknowledgments
 
-- Python 3.x
-- Streamlit (`pip install streamlit`)
-- BeautifulSoup (`pip install beautifulsoup4`)
-- Requests (`pip install requests`)
-- Pandas (`pip install pandas`)
-- SQLite3 (included in Python standard library)
+- eBay for product data
+- Streamlit for the amazing web app framework
+- Icons and graphics from various free sources
