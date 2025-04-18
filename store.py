@@ -545,18 +545,105 @@ def sort_products(products, sort_option):
     return products
 
 def cleanup_database(database='products.db'):
-    if os.path.exists(database):
-        os.remove(database)
-        print(f"Deleted database file: {database}")
+    conn = sqlite3.connect(database)
+    cursor = conn.cursor()
+    cursor.execute('DROP TABLE IF EXISTS products')  # Only delete the products table
+    conn.commit()
+    conn.close()
+    print(f"Deleted products table in database: {database}")
 
+def initialize_database(database='products.db'):
+    conn = sqlite3.connect(database)
+    cursor = conn.cursor()
+    # Create the 'products' table
+    cursor.execute('''CREATE TABLE IF NOT EXISTS products (
+                      link TEXT, 
+                      title TEXT, 
+                      price TEXT, 
+                      img TEXT)''')
+    # Create the 'account' table
+    cursor.execute('''CREATE TABLE IF NOT EXISTS account (
+                      email TEXT PRIMARY KEY, 
+                      name TEXT, 
+                      password TEXT)''')
+    conn.commit()
+    conn.close()
 
-atexit.register(cleanup_database)
+def account_creation_form():
+    # Add a return button at the top-left corner
+    if st.button("🔙", key="return_signup", help="Return to main page", use_container_width=True):
+        st.session_state.view = "main"
+
+    st.markdown('<div class="glass-effect" style="padding: 30px; margin: 20px 0;">', unsafe_allow_html=True)
+    st.markdown('<h3 style="text-align: center;">Create an Account</h3>', unsafe_allow_html=True)
+    email = st.text_input("Email", placeholder="Enter your email")
+    password = st.text_input("Password", type="password", placeholder="Enter your password")
+    name = st.text_input("Name", placeholder="Enter your name")
+    if st.button("Sign Up"):
+        if email and password and name:
+            conn = sqlite3.connect('products.db')
+            cursor = conn.cursor()
+            cursor.execute("SELECT email FROM account WHERE email = ?", (email,))
+            if cursor.fetchone():
+                st.error("This email is already registered. Please sign in.")
+            else:
+                cursor.execute("INSERT INTO account (email, name, password) VALUES (?, ?, ?)", (email, name, password))
+                conn.commit()
+                st.success(f"Account created for {name} ({email})!")
+                st.session_state.view = "main"  # Redirect to main page
+            conn.close()
+        else:
+            st.error("Please fill in all fields.")
+    st.markdown('</div>', unsafe_allow_html=True)
+
+def sign_in_form():
+    # Add a return button at the top-left corner
+    if st.button("🔙", key="return_signin", help="Return to main page", use_container_width=True):
+        st.session_state.view = "main"
+
+    st.markdown('<div class="glass-effect" style="padding: 30px; margin: 20px 0;">', unsafe_allow_html=True)
+    st.markdown('<h3 style="text-align: center;">Sign In</h3>', unsafe_allow_html=True)
+    email = st.text_input("Email", placeholder="Enter your email")
+    password = st.text_input("Password", type="password", placeholder="Enter your password")
+    if st.button("Sign In"):
+        if email and password:
+            conn = sqlite3.connect('products.db')
+            cursor = conn.cursor()
+            cursor.execute("SELECT password FROM account WHERE email = ?", (email,))
+            result = cursor.fetchone()
+            if result is None:
+                st.error("Account not found.")
+            elif result[0] != password:
+                st.error("Wrong password.")
+            else:
+                st.success(f"Welcome back, {email}!")
+                st.session_state.view = "main"  # Redirect to main page
+            conn.close()
+        else:
+            st.error("Please fill in all fields.")
+    st.markdown('</div>', unsafe_allow_html=True)
 
 def main():
     st.set_page_config(layout="wide", page_title="Modern Online Shop", page_icon="🛍️")
     apply_custom_css()
     
     st.markdown('<div class="title">🛍️ Modern Online Shop 🛍️</div>', unsafe_allow_html=True)
+
+    # Add navigation buttons for account management
+    st.markdown('<div class="center-buttons" style="gap: 10px;">', unsafe_allow_html=True)
+    if st.button("👤 Sign Up", key="signup"):
+        st.session_state.view = "signup"
+    if st.button("🔑 Sign In", key="signin"):
+        st.session_state.view = "signin"
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    if st.session_state.get("view") == "signup":
+        account_creation_form()
+        return
+
+    if st.session_state.get("view") == "signin":
+        sign_in_form()
+        return
 
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
@@ -737,8 +824,11 @@ def main():
     ''', unsafe_allow_html=True)
 
 if __name__ == "__main__":
+    initialize_database()  # Initialize the database before running the app
     if 'page_number' not in st.session_state:
         st.session_state.page_number = 1
     if 'sort_option' not in st.session_state:
         st.session_state.sort_option = "Default"
+    if 'view' not in st.session_state:
+        st.session_state.view = "main"
     main()
