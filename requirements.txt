@@ -1,5 +1,5 @@
-streamlit==1.25.0
-pandas==1.5.3
-requests==2.31.0
-beautifulsoup4==4.12.2
-sqlite3==3.36.0
+streamlit==1.44.1
+pandas==2.2.3
+requests==2.32.3
+beautifulsoup4==4.13.4
+sqlite3==3.49.0
