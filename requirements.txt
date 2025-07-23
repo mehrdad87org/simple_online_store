@@ -2,3 +2,5 @@ streamlit-lottie==0.0.5
 streamlit==1.44.1
 pandas==2.2.3
 requests==2.32.3
+BeautifulSoup==3.2.2
+bs4==0.0.2
